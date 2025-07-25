@@ -1,198 +1,167 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import ProtectedRoute from "@/components/ProtectedRoute"
+import DashboardLayout from "@/components/layout/DashboardLayout"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { toast } from "@/components/ui/use-toast"
+import {
+  ClipboardList,
+  GraduationCap,
+  MessageSquare,
+  Phone,
+  Copy,
+} from "lucide-react"
+import Link from "next/link"
 
-interface Teacher {
-  id: string
-  name: string
-  subject: string
-  email: string
-  phone: string
-  avatar: string
-  availability: string
-}
+const teachers = [
+  { id: 1, name: "Mr. Daniel Owusu", subject: "Math", phone: "+233501234567" },
+  { id: 2, name: "Ms. Akosua Mensah", subject: "English", phone: "+233502345678" },
+  { id: 3, name: "Mrs. Grace Boateng", subject: "Science", phone: "+233503456789" },
+  { id: 4, name: "Mr. Kwame Nkrumah", subject: "History", phone: "+233504567890" },
+]
 
-interface Child {
-  id: string
-  name: string
-  grade: string
-  class: string
-}
+export default function ParentDashboard() {
+  const [search, setSearch] = useState("")
+  const [selectedTeacher, setSelectedTeacher] = useState<typeof teachers[0] | null>(null)
 
-interface Message {
-  id: string
-  teacherId: string
-  teacherName: string
-  subject: string
-  message: string
-  response?: string
-  date: string
-  status: "sent" | "read" | "replied"
-}
+  const filteredTeachers = teachers.filter((teacher) =>
+    teacher.name.toLowerCase().includes(search.toLowerCase())
+  )
 
-export default function ParentContactPage() {
-  const [children, setChildren] = useState<Child[]>([])
-  const [teachers, setTeachers] = useState<Teacher[]>([])
-  const [messages, setMessages] = useState<Message[]>([])
-  const [selectedChild, setSelectedChild] = useState<string>("")
-  const [selectedTeacher, setSelectedTeacher] = useState<string>("")
-  const [messageSubject, setMessageSubject] = useState("")
-  const [messageContent, setMessageContent] = useState("")
-  const [loading, setLoading] = useState(true)
-  const [sending, setSending] = useState(false)
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
-  useEffect(() => {
-    if (selectedChild) {
-      fetchTeachers(selectedChild)
-    }
-  }, [selectedChild])
-
-  const fetchData = async () => {
-    try {
-      const [childrenResponse, messagesResponse] = await Promise.all([
-        fetch("/api/parent/children"),
-        fetch("/api/parent/messages"),
-      ])
-
-      if (childrenResponse.ok && messagesResponse.ok) {
-        const childrenData = await childrenResponse.json()
-        const messagesData = await messagesResponse.json()
-
-        setChildren(childrenData.children)
-        setMessages(messagesData.messages)
-
-        if (childrenData.children.length > 0) {
-          setSelectedChild(childrenData.children[0].id)
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error)
-      // Mock data
-      const mockChildren = [
-        { id: "1", name: "Emma Smith", grade: "Grade 10", class: "10A" },
-        { id: "2", name: "James Smith", grade: "Grade 8", class: "8B" },
-      ]
-      setChildren(mockChildren)
-      setSelectedChild(mockChildren[0].id)
-      setMessages([
-        {
-          id: "1",
-          teacherId: "1",
-          teacherName: "Mr. Johnson",
-          subject: "Mathematics Progress",
-          message: "I wanted to discuss Emma's recent improvement in algebra. She's showing great progress!",
-          response: "Thank you for the update! We're very proud of her hard work.",
-          date: "2024-01-18",
-          status: "replied",
-        },
-        {
-          id: "2",
-          teacherId: "2",
-          teacherName: "Dr. Smith",
-          subject: "Lab Safety Reminder",
-          message: "Please remind Emma to bring her safety goggles for tomorrow's chemistry lab.",
-          date: "2024-01-17",
-          status: "read",
-        },
-      ])
-    } finally {
-      setLoading(false)
+  const handleCopy = () => {
+    if (selectedTeacher?.phone) {
+      navigator.clipboard.writeText(selectedTeacher.phone)
+      toast({ title: "Copied", description: "Phone number copied to clipboard" })
     }
   }
 
-  const fetchTeachers = async (childId: string) => {
-    try {
-      const response = await fetch(`/api/parent/teachers/${childId}`)
-      if (response.ok) {
-        const data = await response.json()
-        setTeachers(data.teachers)
-      }
-    } catch (error) {
-      console.error("Error fetching teachers:", error)
-      // Mock data
-      setTeachers([
-        {
-          id: "1",
-          name: "Mr. Johnson",
-          subject: "Mathematics",
-          email: "johnson@school.com",
-          phone: "(555) 123-4567",
-          avatar: "/placeholder.svg?height=40&width=40",
-          availability: "Mon-Fri 2:00-4:00 PM",
-        },
-        {
-          id: "2",
-          name: "Dr. Smith",
-          subject: "Physics",
-          email: "smith@school.com",
-          phone: "(555) 234-5678",
-          avatar: "/placeholder.svg?height=40&width=40",
-          availability: "Mon-Wed 3:00-5:00 PM",
-        },
-        {
-          id: "3",
-          name: "Ms. Davis",
-          subject: "English",
-          email: "davis@school.com",
-          phone: "(555) 345-6789",
-          avatar: "/placeholder.svg?height=40&width=40",
-          availability: "Tue-Thu 1:00-3:00 PM",
-        },
-        {
-          id: "4",
-          name: "Dr. Wilson",
-          subject: "Chemistry",
-          email: "wilson@school.com",
-          phone: "(555) 456-7890",
-          avatar: "/placeholder.svg?height=40&width=40",
-          availability: "Mon-Fri 2:30-4:30 PM",
-        },
-      ])
-    }
-  }
+  return (
+    <ProtectedRoute allowedRoles={["parent"]}>
+      <DashboardLayout>
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Parent Dashboard</h1>
+              <p className="text-gray-600">
+                Monitor your children's academic progress and contact their teachers
+              </p>
+            </div>
+            <Button>
+              <Phone className="w-4 h-4 mr-2" />
+              Contact School
+            </Button>
+          </div>
 
-  const sendMessage = async () => {
-    if (!selectedTeacher || !messageSubject || !messageContent) return
 
-    setSending(true)
-    try {
-      const response = await fetch("/api/parent/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          teacherId: selectedTeacher,
-          childId: selectedChild,
-          subject: messageSubject,
-          message: messageContent,
-        }),
-      })
 
-      if (response.ok) {
-        // Reset form
-        setSelectedTeacher("")
-        setMessageSubject("")
-        setMessageContent("")
-        // Refresh messages
-        fetchData()
-      }
-    } catch (error) {
-      console.error("Error sending message:", error)
-    } finally {
-      setSending(false)
-    }
-  }
+          {/* Teacher Contact Panel */}
+          <div className="mt-8">
+            <h2 className="text-2xl font-semibold mb-4">Contact Teachers</h2>
+            <div className="max-w-lg mb-6">
+              <Input
+                placeholder="Search by teacher's name..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="bg-white/10 backdrop-blur-md border border-white/20"
+              />
+            </div>
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "sent":
-        return "bg-blue-100 text-blue-800"
-      case "read":
-        return "bg-yellow-100 text-yellow-800"
-      case "replied":
-        return "bg-green-100 text-green-800"
-      default:\
-        return "bg
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredTeachers.map((teacher) => (
+                <Card
+                  key={teacher.id}
+                  className="bg-white/10 backdrop-blur-md border border-white/20 shadow-md text-black"
+                >
+                  <CardHeader>
+                    <CardTitle className="text-xl">{teacher.name}</CardTitle>
+                    <p className="text-sm text-black">Subject: {teacher.subject}</p>
+                  </CardHeader>
+                  <CardContent>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full bg-white/20 text-black hover:bg-white/30"
+                          onClick={() => setSelectedTeacher(teacher)}
+                        >
+                          Contact Teacher
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="bg-white/10 backdrop-blur-md border border-white/20 text-white max-w-sm">
+                        <h2 className="text-lg font-semibold mb-2">
+                          Contact Info – {selectedTeacher?.name}
+                        </h2>
+                        <p>Phone: {selectedTeacher?.phone}</p>
+                        <div className="mt-4 flex gap-4">
+                          <Button
+                            variant="outline"
+                            className="flex items-center gap-2 text-black"
+                            onClick={handleCopy}
+                          >
+                            <Copy className="w-4 h-4 text-black" /> Copy
+                          </Button>
+                          <a href={`tel:${selectedTeacher?.phone}`} className="w-full">
+                            <Button variant="outline" className="w-full flex items-center gap-2 text-black">
+                              <Phone className="w-4 h-4 text-black" /> Call
+                            </Button>
+                          </a>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+                    {/* Quick Actions */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Actions</CardTitle>
+              <CardDescription>Common parent activities</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Link href="/dashboard/parent/attendance">
+                  <Button variant="outline" className="w-full h-20 flex flex-col bg-transparent">
+                    <ClipboardList className="w-6 h-6 mb-2" />
+                    View Attendance
+                  </Button>
+                </Link>
+                <Link href="/dashboard/parent/grades">
+                  <Button variant="outline" className="w-full h-20 flex flex-col bg-transparent">
+                    <GraduationCap className="w-6 h-6 mb-2" />
+                    Check Grades
+                  </Button>
+                </Link>
+                <Link href="/dashboard/parent/announcements">
+                  <Button variant="outline" className="w-full h-20 flex flex-col bg-transparent">
+                    <MessageSquare className="w-6 h-6 mb-2" />
+                    Announcements
+                  </Button>
+                </Link>
+                <Link href="/dashboard/parent/contact">
+                  <Button variant="outline" className="w-full h-20 flex flex-col bg-transparent">
+                    <Phone className="w-6 h-6 mb-2" />
+                    Contact Teachers
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </DashboardLayout>
+    </ProtectedRoute>
+  )
+}
