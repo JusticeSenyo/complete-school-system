@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/toaster"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "EduManage - School Management System",
+  title: "school master hub - School Management System",
   description: "Complete SaaS solution for school management",
     generator: 'v0.dev'
 }

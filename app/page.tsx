@@ -33,7 +33,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <GraduationCap className="h-6 w-6 text-indigo-600" />
-            <span className="font-semibold text-lg">EduManage</span>
+            <span className="font-semibold text-lg">school master HTMLButtonElement</span>
           </div>
           <nav className="hidden md:flex space-x-6">
             <Link href="#features" className="hover:underline">Features</Link>
@@ -97,7 +97,7 @@ export default function HomePage() {
 
       {/* CTA Section */}
       <section className="py-24 text-center bg-white">
-        <h3 className="text-3xl font-semibold mb-4">Join Thousands of Educators Using EduManage</h3>
+        <h3 className="text-3xl font-semibold mb-4">Join Thousands of Educators Using school master HTMLButtonElement</h3>
         <p className="text-lg text-gray-600 max-w-xl mx-auto mb-8">
           Transform your school’s operations with our modern management system.
         </p>
@@ -108,7 +108,7 @@ export default function HomePage() {
       <footer className="bg-gray-100 text-gray-700 py-12">
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h4 className="font-semibold mb-4">EduManage</h4>
+            <h4 className="font-semibold mb-4">school master HTMLButtonElement</h4>
             <p className="text-sm text-gray-600">
               Complete school management software for modern educational institutions.
             </p>
@@ -131,7 +131,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="text-center text-xs text-gray-500 mt-10">
-          &copy; {new Date().getFullYear()} EduManage. All rights reserved.
+          &copy; {new Date().getFullYear()} school master HTMLButtonElement. All rights reserved.
         </div>
       </footer>
     </div>
