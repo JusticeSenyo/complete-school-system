@@ -1,5 +1,5 @@
 'use client'
-
+import SignUpModal from "./auth/signupModal/page"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { GraduationCap } from "lucide-react"
@@ -80,6 +80,8 @@ const tiers: Tier[] = [
   
   export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [signupOpen, setSignupOpen] = useState(false)
+
  
 
   const [currency, setCurrency] = useState<keyof typeof currencySymbols>("GHS");
@@ -290,8 +292,9 @@ const tiers: Tier[] = [
                 ))}
               </ul>
             </div>
-            <a href="/auth/signup">
+            
               <button
+               onClick={() => setSignupOpen(true)}
                 className={`mt-8 w-full rounded-xl py-3 font-medium shadow-md transition ${
                   tier.highlight
                     ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white hover:opacity-90"
@@ -299,8 +302,12 @@ const tiers: Tier[] = [
                 }`}
               >
                 Get Started
+
+                
               </button>
-            </a>
+                {/* signupModal */}
+                <SignUpModal open={signupOpen} onClose={() => setSignupOpen(false)} />
+            
           </motion.div>
         );
       })}
@@ -372,11 +379,11 @@ const tiers: Tier[] = [
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-100 text-gray-700 py-12 px-4">
+      <footer className="bg-gradient-to-r from-gray-500 to-gray-400 text-white py-12 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           <div>
             <h4 className="font-semibold mb-4">School Master Hub</h4>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-white">
               Complete school management software for modern educational institutions.
             </p>
           </div>
@@ -397,7 +404,7 @@ const tiers: Tier[] = [
             </ul>
           </div>
         </div>
-        <div className="text-center text-xs text-gray-500 mt-10">
+        <div className="text-center text-xs text-white mt-10">
           &copy; {new Date().getFullYear()} School Master Hub. All rights reserved.
         </div>
       </footer>
