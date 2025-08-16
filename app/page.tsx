@@ -81,12 +81,12 @@ const tiers = [
           <a href="#contact" className="hover:text-indigo-600">Contact</a>
           
           {/* Auth Buttons */}
-          <a 
+          {/* <a 
             href="#login" 
             className="text-gray-700 hover:text-indigo-600"
           >
             Log in
-          </a>
+          </a> */}
           <a 
             href="#pricing" 
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition"
@@ -111,7 +111,7 @@ const tiers = [
             <a href="#features" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Features</a>
             <a href="#pricing" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Pricing</a>
             <a href="#contact" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Contact</a>
-            <a href="#login" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Log in</a>
+            {/* <a href="#login" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Log in</a> */}
             <a 
               href="#get-started" 
               onClick={() => setMenuOpen(false)} 
