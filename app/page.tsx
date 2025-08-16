@@ -173,10 +173,10 @@ const tiers: Tier[] = [
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-3xl sm:text-5xl font-bold leading-tight max-w-xl bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
+            <h1 className=" z-12 text-3xl sm:text-5xl font-bold leading-tight max-w-xl bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent ">
               All-in-One School Management Platform
             </h1>
-            <p className="text-base sm:text-xl text-gray-600 mt-6 max-w-md">
+            <p className="text-base sm:text-xl text-gray-600 mt-6 max-w-md z-2">
               Simplify how your institution manages academics, communication and administration.
             </p>
             <div className="mt-8 sm:mt-10 flex flex-wrap gap-4">

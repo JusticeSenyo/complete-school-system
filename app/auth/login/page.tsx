@@ -160,7 +160,7 @@ export default function LoginPage() {
         <div className="w-full lg:w-1/2 p-8 bg-white/70 backdrop-blur-md rounded-2xl shadow-xl text-center flex flex-col justify-center bg-gradient-to-br from-blue-100 to-blue-300 bg-opacity-30">
           <h3 className="text-3xl font-bold text-primary mb-4">schoolmaster Hub </h3>
           <p className="text-gray-700 text-md leading-relaxed">
-            Our all-in-one platform empowers administrators, teachers, students, and parents with real-time insights, streamlined communication, and smarter tools for academic success. <br /><br />
+            Our all-in-one platform empowers administrators, teachers, students and parents with real-time insights, streamlined communication and smarter tools for academic success. <br /><br />
             Experience a seamless journey from admissions to graduation with EduManage — where innovation meets education.
           </p>
           <img src="/space01.png" alt="School System" className="mt-8 mx-auto w-64 md:w-72 lg:w-80 animate-fade-in" />
