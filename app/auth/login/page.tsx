@@ -41,9 +41,9 @@ export default function LoginPage() {
   const demoAccounts = [
     { role: "Super Admin", email: "super@edumanage.com", password: "demo123" },
     { role: "School Admin", email: "admin@school.com", password: "demo123" },
-    { role: "Teacher", email: "teacher@school.com", password: "demo123" },
-    { role: "Student", email: "student@school.com", password: "demo123" },
-    { role: "Parent", email: "parent@school.com", password: "demo123" },
+    // { role: "Teacher", email: "teacher@school.com", password: "demo123" },
+    // { role: "Student", email: "student@school.com", password: "demo123" },
+    // { role: "Parent", email: "parent@school.com", password: "demo123" },
   ]
 
   return (

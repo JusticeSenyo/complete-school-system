@@ -24,7 +24,7 @@ export default function SignUpPage() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const roles = ["Student", "Teacher", "Parent", "Admin", "super Admin"]
+  const roles = ["Admin", "super Admin"]
   const schoolsInGhana = [
     "Achimota School",
     "Wesley Girls’ High School",
@@ -93,34 +93,25 @@ export default function SignUpPage() {
                 
                 {/* School */}
                 <div>
-                  <Label htmlFor="school" className="flex items-center gap-2 text-gray-800">
+                  <Label htmlFor="school" className="flex items-center gap-2 text-gray-800 mb-2">
                     <School className="h-4 w-4" /> School Name
                   </Label>
-                  <select
-                    id="school"
-                    value={schoolName}
-                    onChange={e => setSchoolName(e.target.value)}
-                    required
-                    className="mt-1 block w-full rounded-md border border-gray-300 p-2 bg-white text-gray-700"
-                  >
-                    <option value="" disabled>Select your school</option>
-                    {schoolsInGhana.map((school, idx) => (
-                      <option key={idx} value={school}>{school}</option>
-                    ))}
-                  </select>
-                </div>
-                {schoolName === "Add Your Own" && (
+
                   <Input
-                    placeholder="Enter your school name"
+                  id="schoolName"
+                    placeholder="school name"
+                    type="text"
                     value={customSchool}
                     onChange={e => setCustomSchool(e.target.value)}
                     required
                   />
-                )}
+                </div>
+                
+                
 
                 {/* Full Name */}
                 <div>
-                  <Label htmlFor="fullName" className="flex items-center gap-2 text-gray-800">
+                  <Label htmlFor="fullName" className="flex items-center gap-2 text-gray-800 mb-2">
                     <User className="h-4 w-4" /> Full Name
                   </Label>
                   <Input
@@ -135,13 +126,13 @@ export default function SignUpPage() {
 
                 {/* Email */}
                 <div>
-                  <Label htmlFor="email" className="flex items-center gap-2 text-gray-800">
+                  <Label htmlFor="email" className="flex items-center gap-2 text-gray-800 mb-2">
                     <Mail className="h-4 w-4" /> Email Address
                   </Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder="info@school.edu"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     required
@@ -150,7 +141,7 @@ export default function SignUpPage() {
 
                 {/* Phone */}
                 <div>
-                  <Label htmlFor="phone" className="flex items-center gap-2 text-gray-800">
+                  <Label htmlFor="phone" className="flex items-center gap-2 text-gray-800 mb-2">
                     <Phone className="h-4 w-4" /> Phone Number
                   </Label>
                   <Input
@@ -165,7 +156,7 @@ export default function SignUpPage() {
 
                 {/* Password */}
                 <div className="relative">
-                  <Label htmlFor="password" className="flex items-center gap-2 text-gray-800">
+                  <Label htmlFor="password" className="flex items-center gap-2 text-gray-800 mb-2">
                     <Lock className="h-4 w-4" /> Password
                   </Label>
                   <Input
