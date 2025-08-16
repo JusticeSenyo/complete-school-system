@@ -54,18 +54,27 @@ type Tier = {
   name: string;
   price: number; // base in GHS
   features: string[];
+  highlight: boolean;
 };
 
 const tiers: Tier[] = [
   {
-    name: "Basic",
+    name: "free",
     price: 100, // GHS by default
-    features: ["Feature A", "Feature B"],
+    features: ["Access to basic resources", "Limited student accounts", "Email support"],
+    highlight: false
   },
   {
-    name: "Pro",
-    price: 250,
-    features: ["Everything in Basic", "Feature C", "Feature D"],
+    name: "bronze",
+    price: 150,
+    features: ["All Free features", "Unlimited student accounts", "Progress tracking", "Priority email support"],
+    highlight: true
+  },
+  {
+    name: "gold",
+    price: 300,
+    features: ["All Bronze features", "Advanced analytics", "Dedicated support", "Custom integrations"],
+    highlight: false
   },
 ];
   
@@ -236,43 +245,69 @@ const tiers: Tier[] = [
       </section>
 
       {/* Pricing */}
-    <section className="py-24 bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-6xl mx-auto px-6 text-center">
-        <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-          Choose Your Plan
-        </h2>
+<section className="py-24 px-4 sm:px-6 bg-gray-50" id="pricing">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-12">
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 sm:text-4xl">
+        Pricing Plans
+      </h2>
+      <p className="mt-4 text-gray-600 text-sm sm:text-base">
+        Choose a plan that fits your school’s needs.
+      </p>
+    </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {tiers.map((tier, idx) => {
-            const convertedPrice =
-              tier.price * conversionRates[currency];
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {tiers.map((tier, i) => {
+        const convertedPrice = tier.price * conversionRates[currency];
 
-            return (
-              <div
-                key={idx}
-                className="p-6 rounded-2xl border shadow bg-white dark:bg-gray-800"
+        return (
+          <motion.div
+            key={tier.name}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            viewport={{ once: true }}
+            className={`rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col justify-between border hover:shadow-2xl transition ${
+              tier.highlight
+                ? "border-blue-600 bg-white"
+                : "border-gray-200 bg-white"
+            }`}
+          >
+            <div>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
+                {tier.name}
+              </h3>
+              <p className="mt-4 text-3xl sm:text-4xl font-bold text-blue-600">
+                {currencySymbols[currency]}
+                {convertedPrice.toFixed(2)}
+              </p>
+              <ul className="mt-6 space-y-3 text-gray-600 text-sm sm:text-base">
+                {tier.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-center gap-2">
+                    <span className="text-green-600">✓</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <a href="/auth/signup">
+              <button
+                className={`mt-8 w-full rounded-xl py-3 font-medium shadow-md transition ${
+                  tier.highlight
+                    ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white hover:opacity-90"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                }`}
               >
-                <h3 className="text-xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400">
-                  {tier.name}
-                </h3>
-                <p className="text-3xl font-bold mb-6">
-                  {currencySymbols[currency]}
-                  {convertedPrice.toFixed(2)}
-                </p>
-                <ul className="text-gray-600 dark:text-gray-300 mb-6 space-y-2">
-                  {tier.features.map((f, i) => (
-                    <li key={i}>• {f}</li>
-                  ))}
-                </ul>
-                <button className="px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700">
-                  Get Started
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+                Get Started
+              </button>
+            </a>
+          </motion.div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
 
       {/* contact */}
       <section className="py-24 px-4 sm:px-6 bg-white" id="contact">
