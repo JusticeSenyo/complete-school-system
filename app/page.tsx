@@ -132,7 +132,7 @@ const tiers = [
               All-in-One School Management Platform
             </h1>
             <p className="text-base sm:text-xl text-gray-600 mt-6 max-w-md">
-              Simplify how your institution manages academics, communication, and administration.
+              Simplify how your institution manages academics, communication and administration.
             </p>
             <div className="mt-8 sm:mt-10 flex flex-wrap gap-4">
               <Link href="#pricing"><Button size="lg">Start Free Trial</Button></Link>
