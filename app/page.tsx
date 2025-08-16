@@ -179,7 +179,7 @@ const tiers: Tier[] = [
             </p>
             <div className="mt-8 sm:mt-10 flex flex-wrap gap-4">
               <Link href="#pricing"><Button size="lg">Start Free Trial</Button></Link>
-              <Link href="/demo"><Button size="lg" variant="outline">View Demo</Button></Link>
+              <Link href="#contact"><Button size="lg" variant="outline">need Help ?</Button></Link>
             </div>
           </motion.div>
 
