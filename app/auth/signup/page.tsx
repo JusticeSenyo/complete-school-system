@@ -24,7 +24,7 @@ export default function SignUpPage() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const roles = ["Admin", "school admin"]
+  const roles = ["school owner", "school administrator", "other"]
   const schoolsInGhana = [
     "Achimota School",
     "Wesley Girls’ High School",
@@ -194,7 +194,7 @@ export default function SignUpPage() {
               <p className="mt-6 text-center text-sm text-gray-700">
                 
                 <button onClick={() => router.push("/")} className="text-indigo-600 font-medium hover:underline">
-                  learn more ?
+                  dont have a doamaniniusu..later
                 </button>
               </p>
             </>

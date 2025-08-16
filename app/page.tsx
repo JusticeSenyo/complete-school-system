@@ -4,57 +4,93 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { GraduationCap } from "lucide-react"
 import { motion } from "framer-motion"
-import { Menu, X } from "lucide-react";
-import { useState } from "react"
+import { 
+  Menu,
+   X ,  
+  School, 
+  Users, 
+  BookOpen, 
+  ClipboardList, 
+  BarChart3, 
+  MessageSquare } from "lucide-react";
+import { useState, useEffect } from "react"
+import { currencySymbols, conversionRates } from "@/utils/currency";
+
+// import ThemeSwitcher from "@/components/ThemeSwitcher";
 
 const features = [
-  { title: "Student Management", desc: "Track profiles, enrollment and academic history." },
-  { title: "Class Scheduling", desc: "Create and manage curriculum timetables easily." },
-  { title: "Attendance & Grading", desc: "Automated attendance and report card generation." },
-  { title: "Parent Communication", desc: "Send announcements and updates instantly." },
-  { title: "SaaS Multi-Tenant", desc: "One platform for multiple institutions." },
-  { title: "Analytics Dashboard", desc: "Powerful insights for decision making." },
+  { 
+    title: "Student Management", 
+    desc: "Track profiles, enrollment and academic history." ,
+    icon: School,
+  },
+  { 
+    title: "Class Scheduling", 
+    desc: "Create and manage curriculum timetables easily." ,
+    icon : ClipboardList
+  },
+  { 
+    title: "Attendance & Grading", 
+    desc: "Automated attendance and report card generation." ,
+    icon : BookOpen
+  },
+  { 
+    title: "Parent Communication", 
+    desc: "Send announcements and updates instantly." ,
+    icon : MessageSquare
+  },
+  { title: "SaaS Multi-Tenant", 
+  desc: "One platform for multiple institutions.",
+  icon : Users
+},
+{ 
+  title: "Analytics Dashboard", 
+  desc: "Powerful insights for decision making.",
+  icon : BarChart3
+  },
 ];
 
-const tiers = [
-    {
-      name: "Free",
-      price: "GHS0",
-      features: [
-        "Access to basic resources",
-        "Limited student accounts",
-        "Email support",
-      ],
-      highlight: false,
-    },
-    {
-      name: "Bronze",
-      price: "GHS19/mo",
-      features: [
-        "All Free features",
-        "Unlimited student accounts",
-        "Progress tracking",
-        "Priority email support",
-      ],
-      highlight: true,
-    },
-    {
-      name: "Gold",
-      price: "GHS49/mo",
-      features: [
-        "All Bronze features",
-        "Advanced analytics",
-        "Dedicated support",
-        "Custom integrations",
-      ],
-      highlight: false,
-    },
-  ];
+type Tier = {
+  name: string;
+  price: number; // base in GHS
+  features: string[];
+};
+
+const tiers: Tier[] = [
+  {
+    name: "Basic",
+    price: 100, // GHS by default
+    features: ["Feature A", "Feature B"],
+  },
+  {
+    name: "Pro",
+    price: 250,
+    features: ["Everything in Basic", "Feature C", "Feature D"],
+  },
+];
   
   export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
+ 
+
+  const [currency, setCurrency] = useState<keyof typeof currencySymbols>("GHS");
+
+  useEffect(() => {
+    // Try auto-detect location currency
+    fetch("https://ipapi.co/json/")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.currency && conversionRates[data.currency]) {
+          setCurrency(data.currency);
+        }
+      })
+      .catch(() => {
+        setCurrency("GHS"); // fallback to Ghana Cedi
+      });
+  }, []);
   return (
-        <div className="relative min-h-screen bg-cover bg-center text-gray-900 overflow-x-hidden"
+<div
+      className="relative min-h-screen bg-cover bg-center text-gray-900 overflow-x-hidden scroll-smooth"
       style={{ backgroundImage: "url('/blackandwhite.jpg')" }}
     >
       {/* Floating Decorative PNGs (hidden on small screens) */}
@@ -67,64 +103,66 @@ const tiers = [
       </div>
 
       {/* Header */}
-<header className="fixed top-0 left-0 w-full bg-white shadow z-50">
-<div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center"> <div className="flex items-center space-x-2"> <GraduationCap className="h-6 w-6 text-indigo-600" /> <span className="font-semibold text-lg">School Master Hub</span> </div>
+      <header className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur shadow z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <GraduationCap className="h-6 w-6 text-indigo-600" />
+            <span className="font-semibold text-lg">School Master Hub</span>
+          </div>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-8 text-gray-700 font-medium">
-          <a href="#features" className="hover:text-indigo-600">Features</a>
-          <a href="#pricing" className="hover:text-indigo-600">Pricing</a>
-          <a href="#contact" className="hover:text-indigo-600">Contact</a>
-          
-          {/* Auth Buttons */}
-          {/* <a 
-            href="#login" 
-            className="text-gray-700 hover:text-indigo-600"
-          >
-            Log in
-          </a> */}
-          <a 
-            href="#pricing" 
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition"
-          >
-            Get Started
-          </a>
-        </nav>
-
-        {/* Hamburger Button (Mobile only) */}
-        <button
-          className="md:hidden text-gray-700 focus:outline-none"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-white border-t shadow-sm">
-          <nav className="flex flex-col space-y-4 px-6 py-4 text-gray-700 font-medium">
-            <a href="#features" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Features</a>
-            <a href="#pricing" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Pricing</a>
-            <a href="#contact" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Contact</a>
-            {/* <a href="#login" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Log in</a> */}
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center space-x-8 text-gray-700 font-medium">
+            <a href="#features" className="hover:text-indigo-600 transition-colors">Features</a>
+            <a href="#pricing" className="hover:text-indigo-600 transition-colors">Pricing</a>
+            <a href="#contact" className="hover:text-indigo-600 transition-colors">Contact</a>
+            {/* <ThemeSwitcher/> */}
             <a 
-              href="#get-started" 
-              onClick={() => setMenuOpen(false)} 
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition text-center"
+              href="#pricing" 
+              className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:opacity-90 transition"
             >
               Get Started
             </a>
           </nav>
+
+          {/* Hamburger Button (Mobile only) */}
+          <button
+            className="md:hidden text-gray-700 focus:outline-none"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
-      )}
-    </header>
+
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <div className="md:hidden bg-white border-t shadow-sm">
+            <nav className="flex flex-col space-y-4 px-6 py-4 text-gray-700 font-medium">
+              <a href="#features" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Features</a>
+              <a href="#pricing" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Pricing</a>
+              <a href="#contact" onClick={() => setMenuOpen(false)} className="hover:text-indigo-600">Contact</a>
+              <a 
+                href="#pricing" 
+                onClick={() => setMenuOpen(false)} 
+                className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition text-center"
+              >
+                Get Started
+              </a>
+            </nav>
+          </div>
+        )}
+      </header>
 
       {/* Hero */}
-      <section className="pt-32 pb-16 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-          <div className="flex-1 text-left">
-            <h1 className="text-3xl sm:text-5xl font-bold leading-tight max-w-xl">
+      <section className="min-h-screen flex items-center px-4 sm:px-6 pt-20">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 w-full">
+          {/* Left Content */}
+          <motion.div 
+            className="flex-1 text-left"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-3xl sm:text-5xl font-bold leading-tight max-w-xl bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
               All-in-One School Management Platform
             </h1>
             <p className="text-base sm:text-xl text-gray-600 mt-6 max-w-md">
@@ -134,103 +172,118 @@ const tiers = [
               <Link href="#pricing"><Button size="lg">Start Free Trial</Button></Link>
               <Link href="/demo"><Button size="lg" variant="outline">View Demo</Button></Link>
             </div>
-          </div>
-          <div className="flex-1 flex justify-center">
+          </motion.div>
+
+          {/* Right Image */}
+          <motion.div 
+            className="flex-1 flex justify-center"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
             <img
               src="/copy.avif"
               alt="Hero Decoration"
               className="max-w-xs sm:max-w-sm lg:max-w-md w-full object-contain animate-float-slow"
             />
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Features */}
-      <section id="features" className="py-24 px-4 sm:px-6 bg-gray-50">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-semibold mb-4">Everything You Need to Run a School</h2>
-          <p className="text-base sm:text-lg text-gray-600 mb-12">Designed to help your school thrive.</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 text-left">
-            {features.map((f, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                className="p-6 rounded-lg border bg-white shadow-sm backdrop-blur"
-              >
-                <h3 className="font-semibold text-lg sm:text-xl mb-2">{f.title}</h3>
-                <p className="text-gray-600 text-sm sm:text-base">{f.desc}</p>
-              </motion.div>
-            ))}
-          </div>
+ <section
+      id="features"
+      className="min-h-screen flex items-center py-24 px-4 sm:px-6 bg-gradient-to-b from-gray-50 to-blue-50 dark:from-gray-900 dark:to-gray-800"
+    >
+      <div className="max-w-7xl mx-auto text-center w-full">
+        <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-gray-900 dark:text-white">
+          Everything You Need to Run a School
+        </h2>
+        <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-12">
+          Designed to help your school thrive.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 text-left">
+          {features.map((f, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              viewport={{ once: true }}
+              className="p-6 rounded-lg border bg-white dark:bg-gray-800 shadow hover:shadow-lg transition"
+            >
+              <f.icon className="w-10 h-10 text-indigo-600 dark:text-indigo-400 mb-4" /> {/* ✅ works now */}
+              <h3 className="font-semibold text-lg sm:text-xl mb-2 text-black dark:text-indigo-300">
+                {f.title}
+              </h3>
+              <p className="text-gray-500 dark:text-gray-300 text-sm sm:text-base">
+                {f.desc}
+              </p>
+            </motion.div>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
+
 
       {/* CTA Section */}
-      <section className="py-24 text-center bg-white px-4">
+      <section className="py-24 text-center bg-gradient-to-r from-gray-500 to-gray-400 px-4 text-white">
         <h3 className="text-2xl sm:text-3xl font-semibold mb-4">Join Thousands of Educators Using School Master HUB</h3>
-        <p className="text-base sm:text-lg text-gray-600 max-w-xl mx-auto mb-8">
+        <p className="text-base sm:text-lg max-w-xl mx-auto mb-8 opacity-90">
           Transform your school’s operations with our modern management system.
         </p>
-        <Link href="#pricing"><Button size="lg">Start Your Free Trial</Button></Link>
+        <Link href="#pricing"><Button size="lg" className="bg-white text-indigo-700 hover:bg-gray-100">Start Your Free Trial</Button></Link>
       </section>
 
       {/* Pricing */}
-      <section className="py-24 px-4 sm:px-6 bg-gray-50" id="pricing">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 sm:text-4xl">
-              Pricing Plans
-            </h2>
-            <p className="mt-4 text-gray-600 text-sm sm:text-base">
-              Choose a plan that fits your school’s needs.
-            </p>
-          </div>
+    <section className="py-24 bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-6xl mx-auto px-6 text-center">
+        <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+          Choose Your Plan
+        </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {tiers.map((tier) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {tiers.map((tier, idx) => {
+            const convertedPrice =
+              tier.price * conversionRates[currency];
+
+            return (
               <div
-                key={tier.name}
-                className={`rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col justify-between border transition-transform hover:scale-105 ${
-                  tier.highlight ? "border-blue-600 bg-white" : "border-gray-200 bg-white"
-                }`}
+                key={idx}
+                className="p-6 rounded-2xl border shadow bg-white dark:bg-gray-800"
               >
-                <div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900">{tier.name}</h3>
-                  <p className="mt-4 text-3xl sm:text-4xl font-bold text-blue-600">{tier.price}</p>
-                  <ul className="mt-6 space-y-3 text-gray-600 text-sm sm:text-base">
-                    {tier.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2">
-                        <span className="text-green-600">✓</span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <a href="/auth/signup">
-                  <button
-                    className={`mt-8 w-full rounded-xl py-3 font-medium shadow-md transition ${
-                      tier.highlight
-                        ? "bg-blue-600 text-white hover:bg-blue-700"
-                        : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                    }`}
-                  >
-                    Get Started
-                  </button>
-                </a>
+                <h3 className="text-xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400">
+                  {tier.name}
+                </h3>
+                <p className="text-3xl font-bold mb-6">
+                  {currencySymbols[currency]}
+                  {convertedPrice.toFixed(2)}
+                </p>
+                <ul className="text-gray-600 dark:text-gray-300 mb-6 space-y-2">
+                  {tier.features.map((f, i) => (
+                    <li key={i}>• {f}</li>
+                  ))}
+                </ul>
+                <button className="px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700">
+                  Get Started
+                </button>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* contact */}
       <section className="py-24 px-4 sm:px-6 bg-white" id="contact">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-between gap-8 sm:gap-12">
           {/* Contact Information */}
-          <div className="flex-1 bg-gray-50 rounded-2xl p-6 sm:p-8 shadow-md">
+          <motion.div 
+            className="flex-1 bg-gray-50 rounded-2xl p-6 sm:p-8 shadow-md"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Get in touch</h3>
             <p className="text-gray-600 mb-6 text-sm sm:text-base">
               Reach out to us through any of the channels below.
@@ -246,10 +299,15 @@ const tiers = [
                 <strong>Address:</strong> Bortianor Hills, Accra, Ghana
               </li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* Contact Form */}
-          <div className="flex-1 bg-gray-50 rounded-2xl p-6 sm:p-8 shadow-md">
+          <motion.div 
+            className="flex-1 bg-gray-50 rounded-2xl p-6 sm:p-8 shadow-md"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Send us a message</h3>
             <form className="space-y-4">
               <input
@@ -269,12 +327,12 @@ const tiers = [
               ></textarea>
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition"
+                className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-3 rounded-xl font-medium hover:opacity-90 transition"
               >
                 Send Message
               </button>
             </form>
-          </div>
+          </motion.div>
         </div>
       </section>
 
