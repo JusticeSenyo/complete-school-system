@@ -68,12 +68,7 @@ const tiers = [
 
       {/* Header */}
 <header className="fixed top-0 left-0 w-full bg-white shadow z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <GraduationCap className="h-6 w-6 text-indigo-600" />
-        <div className="text-2xl font-bold text-indigo-600">
-          School Master Hub
-        </div>
+<div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center"> <div className="flex items-center space-x-2"> <GraduationCap className="h-6 w-6 text-indigo-600" /> <span className="font-semibold text-lg">School Master Hub</span> </div>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8 text-gray-700 font-medium">
