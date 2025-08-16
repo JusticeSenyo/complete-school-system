@@ -8,7 +8,7 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react"
 
 const features = [
-  { title: "Student Management", desc: "Track profiles, enrollment, and academic history." },
+  { title: "Student Management", desc: "Track profiles, enrollment and academic history." },
   { title: "Class Scheduling", desc: "Create and manage curriculum timetables easily." },
   { title: "Attendance & Grading", desc: "Automated attendance and report card generation." },
   { title: "Parent Communication", desc: "Send announcements and updates instantly." },
