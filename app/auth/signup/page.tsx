@@ -24,7 +24,7 @@ export default function SignUpPage() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const roles = ["Admin", "super Admin"]
+  const roles = ["Admin", "school admin"]
   const schoolsInGhana = [
     "Achimota School",
     "Wesley Girls’ High School",

@@ -174,7 +174,7 @@ const tiers = [
 
       {/* CTA Section */}
       <section className="py-24 text-center bg-white px-4">
-        <h3 className="text-2xl sm:text-3xl font-semibold mb-4">Join Thousands of Educators Using School Master</h3>
+        <h3 className="text-2xl sm:text-3xl font-semibold mb-4">Join Thousands of Educators Using School Master HUB</h3>
         <p className="text-base sm:text-lg text-gray-600 max-w-xl mx-auto mb-8">
           Transform your school’s operations with our modern management system.
         </p>
