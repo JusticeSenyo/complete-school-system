@@ -320,10 +320,10 @@ const tiers: Tier[] = [
 
       {/* contact */}
       <section className="py-24 px-4 sm:px-6 bg-white" id="contact">
-                <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-gray-900 dark:text-white text-center mb-10">
+                <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-gray-900 dark:text-white text-center mb-20">
           Get in touch
         </h2>
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-between gap-8 sm:gap-12">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-between gap-8 sm:gap-12 ">
           {/* Contact Information */}
           <motion.div 
             className="flex-1 bg-gray-50 rounded-2xl p-6 sm:p-8 shadow-md"
