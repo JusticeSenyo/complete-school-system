@@ -297,27 +297,51 @@ const tiers: Tier[] = [
               </ul>
             </div>
             
-              <button
-               onClick={() => setSignupOpen(true)}
-                className={`mt-8 w-full rounded-xl py-3 font-medium shadow-md transition ${
-                  tier.highlight
-                    ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white hover:opacity-90"
-                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                }`}
-              >
-                Get Started
+            <button
+              onClick={() => setSignupOpen(true)}
+              className={`mt-8 w-full rounded-xl py-3 font-medium shadow-md transition ${
+                tier.highlight
+                  ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white hover:opacity-90"
+                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+              }`}
+            >
+              Get Started
+            </button>
 
-                
-              </button>
-                {/* signupModal */}
-                <SignUpModal open={signupOpen} onClose={() => setSignupOpen(false)} />
-            
+            {/* signupModal */}
+            <SignUpModal open={signupOpen} onClose={() => setSignupOpen(false)} />
           </motion.div>
         );
       })}
+
+      {/* ⭐ Custom School System Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ delay: tiers.length * 0.1 }}
+        viewport={{ once: true }}
+        className="rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col justify-between border border-dashed border-indigo-400 bg-white hover:shadow-2xl transition"
+      >
+        <div>
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
+            Custom School System
+          </h3>
+          <p className="mt-4 text-gray-600 text-sm sm:text-base">
+            Have unique needs? Let us build a tailored system for your school.
+          </p>
+        </div>
+
+        <a
+          href="#contact"
+          className="mt-8 w-full rounded-xl py-3 font-medium shadow-md bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center hover:opacity-90 transition"
+        >
+          Contact Us
+        </a>
+      </motion.div>
     </div>
   </div>
 </section>
+
 
 
       {/* contact */}
@@ -403,15 +427,15 @@ const tiers: Tier[] = [
             <ul className="text-sm space-y-2">
               <li><Link href="#features">Features</Link></li>
               <li><Link href="#pricing">Pricing</Link></li>
-              <li><Link href="/demo">Demo</Link></li>
+              <li><Link href="/demo">Need a school website + custom domain? → Add-on service.</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-semibold mb-4">Company</h4>
             <ul className="text-sm space-y-2">
-              <li><Link href="/about">About</Link></li>
-              <li><Link href="/contact">Contact</Link></li>
-              <li><Link href="/terms">Terms</Link></li>
+              <li><Link href="/">About</Link></li>
+              <li><Link href="#contact">Contact</Link></li>
+              {/* <li><Link href="/terms">Terms</Link></li> */}
             </ul>
           </div>
         </div>

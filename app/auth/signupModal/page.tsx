@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { 
   Mail, Phone, User, School, MapPin, X, 
-  ShieldCheck, CheckCircle2 
+  ShieldCheck, CheckCircle2, AlertCircle 
 } from "lucide-react"
 
 export default function SignUpModal({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -37,12 +37,35 @@ export default function SignUpModal({ open, onClose }: { open: boolean; onClose:
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
+  // Email validation state
+  const [emailError, setEmailError] = useState("")
+
   const roles = ["School Owner", "School Administrator", "Other"]
+
+  // List of blocked domains
+  const personalDomains = [
+    "gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "aol.com", "icloud.com"
+  ]
+
+  const validateEmail = (value: string) => {
+    const domain = value.split("@")[1]
+    if (domain && personalDomains.includes(domain.toLowerCase())) {
+      setEmailError("Personal emails are not allowed")
+    } else {
+      setEmailError("")
+    }
+  }
 
   // Step 2 submit (sign up)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
+
+    if (emailError) {
+      setError("Please use your official school email.")
+      return
+    }
+
     setLoading(true)
     try {
       const selectedSchool = schoolName === "Add Your Own" ? customSchool : schoolName
@@ -170,8 +193,8 @@ export default function SignUpModal({ open, onClose }: { open: boolean; onClose:
                   />
                 </div>
 
-                {/* Email */}
-                <div>
+                {/* Email with restriction */}
+                <div className="relative">
                   <Label htmlFor="email" className="flex items-center gap-2 text-gray-800 mb-2">
                     <Mail className="h-4 w-4" /> Email Address
                   </Label>
@@ -180,9 +203,31 @@ export default function SignUpModal({ open, onClose }: { open: boolean; onClose:
                     type="email"
                     placeholder="info@school.edu"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={e => {
+                      setEmail(e.target.value)
+                      validateEmail(e.target.value)
+                    }}
+
                     required
+                    className={emailError ? "border-red-500 pr-10" : ""}
                   />
+
+                  {emailError && (
+                    <div className="absolute right-3 top-10 group">
+                      <AlertCircle className="h-5 w-5 text-red-500 cursor-pointer" />
+                      <div className="absolute top-6 right-0 w-64 bg-white text-sm text-gray-700 border border-gray-300 rounded-lg shadow-lg p-3 opacity-0 group-hover:opacity-100 transition">
+                        {emailError}. <br />
+                        <a
+          onClick={onClose}
+
+                          href="#contact"
+                          className="text-blue-600 font-medium hover:underline"
+                        >
+                          Don’t have a school webmail? → Get one through us.
+                        </a>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Location */}
