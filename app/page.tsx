@@ -2,7 +2,7 @@
 import SignUpModal from "./auth/signupModal/page"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { GraduationCap } from "lucide-react"
+import { GraduationCap, User } from "lucide-react"
 import { motion } from "framer-motion"
 import { 
   Menu,
@@ -12,7 +12,9 @@ import {
   BookOpen, 
   ClipboardList, 
   BarChart3, 
-  MessageSquare } from "lucide-react";
+  MessageSquare,
+  Mail 
+} from "lucide-react";
 import { useState, useEffect } from "react"
 import { currencySymbols, conversionRates } from "@/utils/currency";
 
@@ -318,6 +320,9 @@ const tiers: Tier[] = [
 
       {/* contact */}
       <section className="py-24 px-4 sm:px-6 bg-white" id="contact">
+                <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-gray-900 dark:text-white text-center mb-10">
+          Get in touch
+        </h2>
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-between gap-8 sm:gap-12">
           {/* Contact Information */}
           <motion.div 
@@ -326,7 +331,7 @@ const tiers: Tier[] = [
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Get in touch</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Contact Info</h3>
             <p className="text-gray-600 mb-6 text-sm sm:text-base">
               Reach out to us through any of the channels below.
             </p>
@@ -352,16 +357,20 @@ const tiers: Tier[] = [
           >
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Send us a message</h3>
             <form className="space-y-4">
+              <div>
               <input
                 type="text"
                 placeholder="Your Name"
                 className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
               />
+              </div>
+              <div>
               <input
                 type="email"
                 placeholder="Your Email"
                 className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
               />
+              </div>
               <textarea
                 placeholder="Your Message"
                 rows="5"
