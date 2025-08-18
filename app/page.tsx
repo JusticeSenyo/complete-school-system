@@ -61,21 +61,21 @@ type Tier = {
 
 const tiers: Tier[] = [
   {
-    name: "free",
-    price: 100, // GHS by default
-    features: ["Access to basic resources", "Limited student accounts", "Email support"],
+    name: "Basic",
+    price: 529.2, // GHS by default
+    features: ["Attendance", "Report Cards", "Academic bills & fees", "roles(Owner,Admin,Head)","roles(Teachers,Accountant)"],
     highlight: false
   },
   {
     name: "bronze",
-    price: 150,
-    features: ["All Free features", "Unlimited student accounts", "Progress tracking", "Priority email support"],
+    price: 1069.20,
+    features: ["Everything in Basic", "Parent dashboard ", "Student Dashboard", "Bulk SMS/Whatsaap/email", "simple analystics"],
     highlight: true
   },
   {
     name: "gold",
-    price: 300,
-    features: ["All Bronze features", "Advanced analytics", "Dedicated support", "Custom integrations"],
+    price: 2149.2,
+    features: ["everything is standard", "online classes", "multi-campus support","white label", "advanced analytics", "dedicated success manager"],
     highlight: false
   },
 ];
@@ -175,7 +175,7 @@ const tiers: Tier[] = [
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className=" z-12 text-3xl sm:text-5xl font-bold leading-tight max-w-xl bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent ">
+            <h1 className=" z-12 text-3xl sm:text-5xl font-bold leading-tight max-w-xl bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent pb-5">
               All-in-One School Management Platform
             </h1>
             <p className="text-base sm:text-xl text-gray-600 mt-6 max-w-md z-2">
@@ -245,7 +245,7 @@ const tiers: Tier[] = [
         <p className="text-base sm:text-lg max-w-xl mx-auto mb-8 opacity-90">
           Transform your school’s operations with our modern management system.
         </p>
-        <Link href="#pricing"><Button size="lg" className="bg-white text-indigo-700 hover:bg-gray-100">Start Your Free Trial</Button></Link>
+        <Link href="#contact"><Button size="lg" className="bg-white text-indigo-700 hover:bg-gray-100">need more info ?</Button></Link>
       </section>
 
       {/* Pricing */}
