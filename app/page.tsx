@@ -118,10 +118,12 @@ const tiers: Tier[] = [
       {/* Header */}
       <header className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur shadow z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <Link href="/">
           <div className="flex items-center space-x-2">
             <GraduationCap className="h-6 w-6 text-indigo-600" />
             <span className="font-semibold text-lg">School Master Hub</span>
           </div>
+          </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center space-x-8 text-gray-700 font-medium">
