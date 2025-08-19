@@ -3,7 +3,8 @@ import SignUpModal from "./auth/signupModal/page"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { GraduationCap, User } from "lucide-react"
-import { motion } from "framer-motion"
+import { motion , AnimatePresence } from "framer-motion"
+import { tierPrices } from "@/utils/currency";
 import { 
   Menu,
    X ,  
@@ -13,7 +14,8 @@ import {
   ClipboardList, 
   BarChart3, 
   MessageSquare,
-  Mail 
+  Mail ,
+  ChevronDown, ChevronUp, Check, Star, Sparkles 
 } from "lucide-react";
 import { useState, useEffect } from "react"
 import { currencySymbols, conversionRates } from "@/utils/currency";
@@ -58,31 +60,192 @@ type Tier = {
   features: string[];
   highlight: boolean;
 };
-
-const tiers: Tier[] = [
+const tiers = [
   {
     name: "Basic",
-    price: 529.2, // GHS by default
-    features: ["Attendance", "Report Cards", "Academic bills & fees", "roles(Owner,Admin,Head)","roles(Teachers,Accountant)"],
-    highlight: false
+    description: "Perfect for small schools getting started with digital management",
+    icon: "🎯",
+    features: [
+      "Up to 100 students",
+      "Attendance tracking", 
+      "Report card generation", 
+      "Academic bills & fees", 
+      "Basic user roles (Owner, Admin, Head, Teachers, Accountant)"
+    ],
+    highlight: false,
+    detailedFeatures: {
+      'Student Management': [
+        'Student profiles and enrollment',
+        'Basic attendance tracking',
+        'Simple grade book',
+        'Parent contact information',
+        'Academic history tracking'
+      ],
+      'Financial Management': [
+        'Academic bills and fees',
+        'Basic payment tracking',
+        'Fee structure setup',
+        'Payment receipts'
+      ],
+      'User Management': [
+        'Owner admin access',
+        'Head teacher dashboard',
+        'Teacher grade input',
+        'Accountant financial access',
+        'Role-based permissions'
+      ],
+      'Reporting': [
+        'Automated report cards',
+        'Attendance reports',
+        'Basic academic summaries',
+        'Fee payment reports'
+      ],
+      'Support': [
+        'Email support (48hr response)',
+        'Getting started guide',
+        'Basic training materials'
+      ]
+    }
   },
   {
-    name: "bronze",
-    price: 1069.20,
-    features: ["Everything in Basic", "Parent dashboard ", "Student Dashboard", "Bulk SMS/Whatsaap/email", "simple analystics"],
-    highlight: true
+    name: "standard", 
+    description: "Comprehensive solution for growing schools with parent engagement",
+    icon: "🚀",
+    features: [
+      "Everything in Basic",
+      "Up to 500 students", 
+      "Parent dashboard access", 
+      "Student dashboard", 
+      "Bulk SMS/WhatsApp/Email notifications",
+      "Simple analytics and insights"
+    ],
+    highlight: true,
+    detailedFeatures: {
+      'Enhanced Communication': [
+        'Parent portal with real-time updates',
+        'Student self-service dashboard',
+        'Bulk SMS messaging system',
+        'WhatsApp integration',
+        'Email campaign management',
+        'Push notifications'
+      ],
+      'Advanced Student Management': [
+        'Expanded student capacity (500+)',
+        'Behavioral tracking',
+        'Medical records management',
+        'Academic progress monitoring',
+        'Parent-teacher communication logs'
+      ],
+      'Analytics & Insights': [
+        'Student performance analytics',
+        'Attendance trend analysis',
+        'Financial reporting dashboard',
+        'Class performance metrics',
+        'Parent engagement tracking'
+      ],
+      'Mobile Access': [
+        'Mobile-responsive design',
+        'Parent mobile app access',
+        'Student mobile dashboard',
+        'Teacher mobile grade entry'
+      ],
+      'Enhanced Support': [
+        'Priority email support (24hr response)',
+        'Phone support during business hours',
+        'Advanced training sessions',
+        'Setup assistance'
+      ]
+    }
   },
   {
-    name: "gold",
-    price: 2149.2,
-    features: ["everything is standard", "online classes", "multi-campus support","white label", "advanced analytics", "dedicated success manager"],
-    highlight: false
-  },
+    name: "premium",
+    description: "Enterprise-grade platform for large schools with advanced features",
+    icon: "👑", 
+    features: [
+      "Everything in Standard",
+      "Unlimited students",
+      "Online classes & virtual learning", 
+      "Multi-campus management support",
+      "White-label branding options",
+      "Advanced analytics & AI insights",
+      "Dedicated success manager"
+    ],
+    highlight: false,
+    detailedFeatures: {
+      'Online Learning Platform': [
+        'Virtual classroom integration',
+        'Online assignment submission',
+        'Video conferencing tools',
+        'Digital resource library',
+        'Online exam capabilities'
+      ],
+      'Multi-Campus Features': [
+        'Centralized multi-school management',
+        'Cross-campus reporting',
+        'Unified parent portal',
+        'Resource sharing between campuses',
+        'Consolidated billing'
+      ],
+      'Enterprise Customization': [
+        'White-label branding',
+        'Custom domain setup',
+        'Personalized color schemes',
+        'Custom feature development',
+        'API access for integrations'
+      ],
+      'Advanced Analytics': [
+        'AI-powered student predictions',
+        'Advanced data visualization',
+        'Custom report builder',
+        'Predictive analytics',
+        'Performance benchmarking'
+      ],
+      'Premium Support': [
+        '24/7 phone and chat support',
+        'Dedicated success manager',
+        'On-site training available',
+        'Priority feature requests',
+        'Custom implementation support'
+      ]
+    }
+  }
 ];
+// const tiers: Tier[] = [
+//   {
+//     name: "Basic",
+//     price: 529.2, // GHS by default
+//     features: ["Attendance", "Report Cards", "Academic bills & fees", "roles(Owner,Admin,Head)","roles(Teachers,Accountant)"],
+//     highlight: false
+//   },
+//   {
+//     name: "standard",
+//     price: 1069.20,
+//     features: ["Everything in Basic", "Parent dashboard ", "Student Dashboard", "Bulk SMS/Whatsaap/email", "simple analystics"],
+//     highlight: true
+//   },
+//   {
+//     name: "premium",
+//     price: 2149.2,
+//     features: ["everything is standard", "online classes", "multi-campus support","white label", "advanced analytics", "dedicated success manager"],
+//     highlight: false
+//   },
+// ];
   
   export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [signupOpen, setSignupOpen] = useState(false)
+
+  // Add these state variables to your component:
+const [isYearly, setIsYearly] = useState(false);
+const [expandedTiers, setExpandedTiers] = useState({});
+
+// Add this function to your component:
+const toggleTierExpansion = (tierName) => {
+  setExpandedTiers(prev => ({
+    ...prev,
+    [tierName]: !prev[tierName]
+  }));
+};
 
  
 
@@ -251,21 +414,70 @@ const tiers: Tier[] = [
       </section>
 
       {/* Pricing */}
-<section className="py-24 px-4 sm:px-6 bg-gray-50" id="pricing">
+<section className="py-24 px-4 sm:px-6 bg-gradient-to-b from-gray-50 to-white" id="pricing">
   <div className="max-w-7xl mx-auto">
     <div className="text-center mb-12">
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 sm:text-4xl">
-        Pricing Plans
-      </h2>
-      <p className="mt-4 text-gray-600 text-sm sm:text-base">
-        Choose a plan that fits your school’s needs.
-      </p>
+      <motion.h2 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4"
+      >
+        Choose Your Perfect Plan
+      </motion.h2>
+      <motion.p 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        viewport={{ once: true }}
+        className="text-lg text-gray-600 mb-8"
+      >
+        Transparent pricing that grows with your school. Start your free trial today.
+      </motion.p>
+      
+      {/* Billing Toggle */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        viewport={{ once: true }}
+        className="flex items-center justify-center mb-8"
+      >
+        <div className="bg-gray-100 p-1 rounded-full flex items-center">
+          <button
+            onClick={() => setIsYearly(false)}
+            className={`px-6 py-2 rounded-full text-sm font-medium transition ${
+              !isYearly 
+                ? 'bg-white text-gray-900 shadow-sm' 
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            Monthly
+          </button>
+          <button
+            onClick={() => setIsYearly(true)}
+            className={`px-6 py-2 rounded-full text-sm font-medium transition relative ${
+              isYearly 
+                ? 'bg-white text-gray-900 shadow-sm' 
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            Yearly
+            <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full">
+              Save 17%
+            </span>
+          </button>
+        </div>
+      </motion.div>
     </div>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    {/* Pricing Tiers */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
       {tiers.map((tier, i) => {
-        const convertedPrice = tier.price * conversionRates[currency];
-
+        const priceData = tierPrices[currency][tier.name];
+        const price = isYearly ? priceData.yearly : priceData.monthly;
+        const isExpanded = expandedTiers[tier.name];
+        
         return (
           <motion.div
             key={tier.name}
@@ -273,72 +485,155 @@ const tiers: Tier[] = [
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
             viewport={{ once: true }}
-            className={`rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col justify-between border hover:shadow-2xl transition ${
+            className={`rounded-2xl shadow-lg p-8 flex flex-col justify-between border hover:shadow-2xl transition-all duration-300 relative overflow-hidden ${
               tier.highlight
-                ? "border-blue-600 bg-white"
-                : "border-gray-200 bg-white"
+                ? "border-blue-500 bg-white ring-2 ring-blue-500 ring-opacity-20"
+                : "border-gray-200 bg-white hover:border-gray-300"
             }`}
           >
+            {tier.highlight && (
+              <div className="absolute top-0 right-0 bg-gradient-to-l from-blue-500 to-purple-600 text-white px-4 py-1 rounded-bl-lg text-sm font-medium">
+                <Star className="w-4 h-4 inline mr-1" />
+                Most Popular
+              </div>
+            )}
+            
             <div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
-                {tier.name}
-              </h3>
-              <p className="mt-4 text-3xl sm:text-4xl font-bold text-blue-600">
-                {currencySymbols[currency]}
-                {convertedPrice.toFixed(2)}
-              </p>
-              <ul className="mt-6 space-y-3 text-gray-600 text-sm sm:text-base">
+              <div className="flex items-center mb-4">
+                <span className="text-3xl mr-3">{tier.icon}</span>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 capitalize">{tier.name}</h3>
+                  <p className="text-gray-600 text-sm mt-1">{tier.description}</p>
+                </div>
+              </div>
+              
+              <div className="mb-6">
+                <div className="flex items-baseline">
+                  <span className="text-4xl font-bold text-gray-900">
+                    {currencySymbols[currency]}{price.toLocaleString()}
+                  </span>
+                  <span className="text-gray-600 ml-2">
+                    /{isYearly ? 'year' : 'month'}
+                  </span>
+                </div>
+                {isYearly && (
+                  <p className="text-green-600 text-sm font-medium mt-1">
+                    Save {currencySymbols[currency]}{(priceData.monthly * 12 - priceData.yearly).toLocaleString()} per year
+                  </p>
+                )}
+              </div>
+
+              <ul className="space-y-3 mb-6">
                 {tier.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center gap-2">
-                    <span className="text-green-600">✓</span>
-                    {feature}
+                  <li key={idx} className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                    <span className="text-gray-700">{feature}</span>
                   </li>
                 ))}
               </ul>
+
+              {/* Expandable Details */}
+              <button
+                onClick={() => toggleTierExpansion(tier.name)}
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors mb-4"
+              >
+                <span className="text-gray-700 font-medium">
+                  {isExpanded ? 'Hide' : 'View'} all features
+                </span>
+                {isExpanded ? (
+                  <ChevronUp className="w-4 h-4 text-gray-500" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-gray-500" />
+                )}
+              </button>
+
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="border-t pt-4 space-y-4">
+                      {Object.entries(tier.detailedFeatures).map(([category, features]) => (
+                        <div key={category}>
+                          <h5 className="font-semibold text-gray-900 mb-2">{category}</h5>
+                          <ul className="space-y-1">
+                            {features.map((feature, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-sm text-gray-600">
+                                <span className="text-blue-500 mt-1">•</span>
+                                {feature}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-            
+           
             <button
               onClick={() => setSignupOpen(true)}
-              className={`mt-8 w-full rounded-xl py-3 font-medium shadow-md transition ${
+              className={`w-full rounded-xl py-4 font-semibold shadow-md transition-all duration-200 ${
                 tier.highlight
-                  ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white hover:opacity-90"
-                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transform hover:scale-105"
+                  : "bg-gray-900 text-white hover:bg-gray-800"
               }`}
             >
-              Get Started
+              Start Free Trial
             </button>
-
-            {/* signupModal */}
-            <SignUpModal open={signupOpen} onClose={() => setSignupOpen(false)} />
           </motion.div>
         );
       })}
+    </div>
 
-      {/* ⭐ Custom School System Card */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ delay: tiers.length * 0.1 }}
-        viewport={{ once: true }}
-        className="rounded-2xl shadow-lg p-6 sm:p-8 flex flex-col justify-between border border-dashed border-indigo-400 bg-white hover:shadow-2xl transition"
-      >
-        <div>
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
-            Custom School System
-          </h3>
-          <p className="mt-4 text-gray-600 text-sm sm:text-base">
-            Have unique needs? Let us build a tailored system for your school.
-          </p>
+    {/* Custom School System - Full Width */}
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.4 }}
+      viewport={{ once: true }}
+      className="rounded-2xl shadow-lg p-8 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white relative overflow-hidden"
+    >
+      <div className="absolute inset-0 bg-black bg-opacity-10"></div>
+      <div className="relative z-10 text-center max-w-4xl mx-auto">
+        <div className="flex items-center justify-center mb-6">
+          <Sparkles className="w-8 h-8 mr-3" />
+          <h3 className="text-3xl font-bold">Custom School System</h3>
         </div>
-
+        
+        <p className="text-xl mb-8 text-purple-100">
+          Need something unique? We'll build a tailored solution that perfectly fits your school's specific requirements and workflow.
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-left">
+          <div className="bg-white bg-opacity-10 rounded-lg p-4 backdrop-blur-sm">
+            <h4 className="font-semibold mb-2">🎨 Custom Features</h4>
+            <p className="text-sm text-purple-100">Unique functionalities built specifically for your processes</p>
+          </div>
+          <div className="bg-white bg-opacity-10 rounded-lg p-4 backdrop-blur-sm">
+            <h4 className="font-semibold mb-2">🔗 System Integration</h4>
+            <p className="text-sm text-purple-100">Seamlessly connect with your existing tools and software</p>
+          </div>
+          <div className="bg-white bg-opacity-10 rounded-lg p-4 backdrop-blur-sm">
+            <h4 className="font-semibold mb-2">🏫 Your Brand</h4>
+            <p className="text-sm text-purple-100">Fully branded experience matching your school's identity</p>
+          </div>
+        </div>
+        
         <a
           href="#contact"
-          className="mt-8 w-full rounded-xl py-3 font-medium shadow-md bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center hover:opacity-90 transition"
+          className="inline-flex items-center px-8 py-4 bg-white text-purple-600 font-semibold rounded-xl shadow-lg hover:bg-gray-50 transition-all duration-200 transform hover:scale-105"
         >
-          Contact Us
+          Let's Build Something Amazing Together
+          <span className="ml-2">→</span>
         </a>
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   </div>
 </section>
 

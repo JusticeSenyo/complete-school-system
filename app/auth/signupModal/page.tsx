@@ -6,9 +6,12 @@ import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { motion, AnimatePresence } from "framer-motion"
+
+
 import { 
   Mail, Phone, User, School, MapPin, X, 
-  ShieldCheck, CheckCircle2, AlertCircle 
+  ShieldCheck, CheckCircle2, AlertCircle ,Loader2
 } from "lucide-react"
 
 export default function SignUpModal({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -28,6 +31,9 @@ export default function SignUpModal({ open, onClose }: { open: boolean; onClose:
   const [location, setLocation] = useState("")
   const [schoolName, setSchoolName] = useState("")
   const [customSchool, setCustomSchool] = useState("")
+  const [verifying, setVerifying] = useState(false)
+const [verified, setVerified] = useState(false)
+
 
   // Verification
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""))
@@ -83,24 +89,55 @@ export default function SignUpModal({ open, onClose }: { open: boolean; onClose:
   }
 
   // Step 3 submit (verify code)
-  const handleVerify = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-    setLoading(true)
-    try {
-      const code = otp.join("")
-      const result = await verifyCode(email, code)
-      if (result.success) {
-        setStep(4) // success message
-      } else {
-        setError("Invalid or expired code.")
-      }
-    } catch {
-      setError("Something went wrong.")
-    } finally {
-      setLoading(false)
+  // const handleVerify = async (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   setError("")
+  //   setLoading(true)
+  //   try {
+  //     const code = otp.join("")
+  //     const result = await verifyCode(email, code)
+  //     if (result.success) {
+  //       setStep(4) // success message
+  //     } else {
+  //       setError("Invalid or expired code.")
+  //     }
+  //   } catch {
+  //     setError("Something went wrong.")
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+  // Step 3 submit (verify code)
+const handleVerify = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setError("")
+  setVerifying(true)   // 🔹 start spinner
+
+  try {
+    const code = otp.join("")
+
+    if (code.length === 6) {
+      // fake delay so spinner is visible
+      setTimeout(() => {
+        setVerifying(false)
+        setVerified(true)   // 🔹 show check
+
+        // after check sign, move to Step 4
+        setTimeout(() => {
+          setStep(4)
+        }, 1200)
+      }, 1500)
+    } else {
+      setError("Please enter all 6 digits.")
+      setVerifying(false)
     }
+  } catch {
+    setError("Something went wrong.")
+    setVerifying(false)
   }
+}
+
+
 
   // Handle OTP input
   const handleOtpChange = (value: string, index: number) => {
@@ -134,6 +171,7 @@ export default function SignUpModal({ open, onClose }: { open: boolean; onClose:
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Left Side */}
           <div className="p-8 md:p-10">
+            
             {step === 1 && (
               <>
                 <h2 className="text-2xl font-bold text-center mb-6">Who Are You?</h2>
@@ -293,9 +331,26 @@ export default function SignUpModal({ open, onClose }: { open: boolean; onClose:
 
                 {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
-                <Button type="submit" className="w-full bg-indigo-600 text-white">
-                  {loading ? "Verifying..." : "Verify Code"}
-                </Button>
+                <div className="flex justify-center">
+  {!verifying && !verified && (
+    <Button type="submit" className="w-full bg-indigo-600 text-white">
+      Verify Code
+    </Button>
+  )}
+
+  {verifying && (
+    <div className="w-full flex justify-center py-2">
+      <Loader2 className="w-6 h-6 text-indigo-600 animate-spin" />
+    </div>
+  )}
+
+  {verified && (
+    <div className="w-full flex justify-center py-2">
+      <CheckCircle2 className="w-6 h-6 text-green-600" />
+    </div>
+  )}
+</div>
+
               </form>
             )}
 
@@ -306,9 +361,9 @@ export default function SignUpModal({ open, onClose }: { open: boolean; onClose:
                 <p className="text-gray-600">
                   Your account is verified! A login link has been sent to your email. 🎉
                 </p>
-                <Button onClick={onClose} className="w-full bg-indigo-600 text-white">
-                  Close
-                </Button>
+                <p  className="w-full  text-black">
+                  Thank You for Creating an account with us
+                </p>
               </div>
             )}
           </div>
@@ -324,5 +379,6 @@ export default function SignUpModal({ open, onClose }: { open: boolean; onClose:
         </div>
       </div>
     </div>
+
   )
 }
