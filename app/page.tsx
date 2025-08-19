@@ -586,6 +586,8 @@ const toggleTierExpansion = (tierName) => {
             >
               Start Free Trial
             </button>
+            <SignUpModal open={signupOpen} onClose={() => setSignupOpen(false)} />
+
           </motion.div>
         );
       })}
