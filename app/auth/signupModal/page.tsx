@@ -56,7 +56,7 @@ const [verified, setVerified] = useState(false)
   const validateEmail = (value: string) => {
     const domain = value.split("@")[1]
     if (domain && personalDomains.includes(domain.toLowerCase())) {
-      setEmailError("Personal emails are not allowed")
+      setEmailError("Personal emails are not allowed don't have a work mail ?  ")
     } else {
       setEmailError("")
     }
@@ -261,7 +261,7 @@ const handleVerify = async (e: React.FormEvent) => {
                           href="#contact"
                           className="text-blue-600 font-medium hover:underline"
                         >
-                          Don’t have a school webmail? → Get one through us.
+                          Get one through us.
                         </a>
                       </div>
                     </div>

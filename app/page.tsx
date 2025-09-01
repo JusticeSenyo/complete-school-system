@@ -149,12 +149,12 @@ const tiers = [
         'Student mobile dashboard',
         'Teacher mobile grade entry'
       ],
-      'Enhanced Support': [
-        'Priority email support (24hr response)',
-        'Phone support during business hours',
-        'Advanced training sessions',
-        'Setup assistance'
-      ]
+      // 'Enhanced Support': [
+      //   'Priority email support (24hr response)',
+      //   'Phone support during business hours',
+      //   'Advanced training sessions',
+      //   'Setup assistance'
+      // ]
     }
   },
   {
@@ -200,13 +200,13 @@ const tiers = [
         'Predictive analytics',
         'Performance benchmarking'
       ],
-      'Premium Support': [
-        '24/7 phone and chat support',
-        'Dedicated success manager',
-        'On-site training available',
-        'Priority feature requests',
-        'Custom implementation support'
-      ]
+      // 'Premium Support': [
+      //   '24/7 phone and chat support',
+      //   'Dedicated success manager',
+      //   'On-site training available',
+      //   'Priority feature requests',
+      //   'Custom implementation support'
+      // ]
     }
   }
 ];
@@ -724,7 +724,7 @@ const toggleTierExpansion = (tierName) => {
             <ul className="text-sm space-y-2">
               <li><Link href="#features">Features</Link></li>
               <li><Link href="#pricing">Pricing</Link></li>
-              <li><Link href="/demo">Need a school website + custom domain? → Add-on service.</Link></li>
+              <li><Link href="/demo">Need a school work mail ?</Link></li>
             </ul>
           </div>
           <div>
