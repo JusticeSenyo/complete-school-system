@@ -20,9 +20,9 @@ export const tierPrices: Record<
   >
 > = {
   GHS: {
-    basic: { monthly: 450, yearly: 5000 },
-    standard: { monthly: 650, yearly: 7200 },
-    premium: { monthly: 900, yearly: 10000 },
+    basic: { monthly: 450, yearly: 4500 },
+    standard: { monthly: 950, yearly: 9500 },
+    premium: { monthly: 1450, yearly: 14500 },
   },
   USD: {
     basic: { monthly: 49, yearly: 499 },
