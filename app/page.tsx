@@ -66,7 +66,7 @@ const tiers = [
     description: "Perfect for small schools getting started with digital management",
     icon: "🎯",
     features: [
-      "Up to 100 students",
+      "Up to 500 students",
       "Attendance tracking", 
       "Report card generation", 
       "Academic bills & fees", 
@@ -100,11 +100,11 @@ const tiers = [
         'Basic academic summaries',
         'Fee payment reports'
       ],
-      'Support': [
-        'Email support (48hr response)',
-        'Getting started guide',
-        'Basic training materials'
-      ]
+      // 'Support': [
+      //   'Email support (48hr response)',
+      //   'Getting started guide',
+      //   'Basic training materials'
+      // ]
     }
   },
   {
@@ -113,7 +113,7 @@ const tiers = [
     icon: "🚀",
     features: [
       "Everything in Basic",
-      "Up to 500 students", 
+      "Up to 1000 students", 
       "Parent dashboard access", 
       "Student dashboard", 
       "Bulk SMS/WhatsApp/Email notifications",

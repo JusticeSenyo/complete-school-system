@@ -271,7 +271,7 @@ const handleVerify = async (e: React.FormEvent) => {
                 {/* Location */}
                 <div>
                   <Label htmlFor="location" className="flex items-center gap-2 text-gray-800 mb-2">
-                    <MapPin className="h-4 w-4" /> Location
+                    <MapPin className="h-4 w-4" /> school Location
                   </Label>
                   <Input
                     id="location"
