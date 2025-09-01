@@ -406,7 +406,7 @@ const toggleTierExpansion = (tierName) => {
 
       {/* CTA Section */}
       <section className="py-24 text-center bg-gradient-to-r from-gray-500 to-gray-400 px-4 text-white">
-        <h3 className="text-2xl sm:text-3xl font-semibold mb-4">Join Thousands of Educators Using School Master HUB</h3>
+        <h3 className="text-2xl sm:text-3xl font-semibold mb-4">Join Thousands of Educators Using School Master Hub</h3>
         <p className="text-base sm:text-lg max-w-xl mx-auto mb-8 opacity-90">
           Transform your school’s operations with our modern management system.
         </p>
