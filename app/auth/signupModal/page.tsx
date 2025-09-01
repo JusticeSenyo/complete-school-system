@@ -89,53 +89,55 @@ const [verified, setVerified] = useState(false)
   }
 
   // Step 3 submit (verify code)
-  // const handleVerify = async (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   setError("")
-  //   setLoading(true)
-  //   try {
-  //     const code = otp.join("")
-  //     const result = await verifyCode(email, code)
-  //     if (result.success) {
-  //       setStep(4) // success message
-  //     } else {
-  //       setError("Invalid or expired code.")
-  //     }
-  //   } catch {
-  //     setError("Something went wrong.")
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
-  // Step 3 submit (verify code)
-const handleVerify = async (e: React.FormEvent) => {
-  e.preventDefault()
-  setError("")
-  setVerifying(true)   // 🔹 start spinner
-
-  try {
-    const code = otp.join("")
-
-    if (code.length === 6) {
-      // fake delay so spinner is visible
-      setTimeout(() => {
-        setVerifying(false)
-        setVerified(true)   // 🔹 show check
-
-        // after check sign, move to Step 4
-        setTimeout(() => {
-          setStep(4)
-        }, 1200)
-      }, 1500)
-    } else {
-      setError("Please enter all 6 digits.")
-      setVerifying(false)
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError("")
+    setLoading(true)
+    try {
+      const code = otp.join("")
+      const result = await verifyCode(email, code)
+      if (result.success) {
+        setStep(4) // success message
+      } else {
+        setError("Invalid or expired code.")
+      }
+    } catch {
+      setError("Something went wrong.")
+    } finally {
+      setLoading(false)
     }
-  } catch {
-    setError("Something went wrong.")
-    setVerifying(false)
   }
-}
+
+  
+  // Step 3 submit (verify code)
+// const handleVerify = async (e: React.FormEvent) => {
+//   e.preventDefault()
+//   setError("")
+//   setVerifying(true)   // 🔹 start spinner
+
+//   try {
+//     const code = otp.join("")
+
+//     if (code.length === 6) {
+//       // fake delay so spinner is visible
+//       setTimeout(() => {
+//         setVerifying(false)
+//         setVerified(true)   // 🔹 show check
+
+//         // after check sign, move to Step 4
+//         setTimeout(() => {
+//           setStep(4)
+//         }, 1200)
+//       }, 1500)
+//     } else {
+//       setError("Please enter all 6 digits.")
+//       setVerifying(false)
+//     }
+//   } catch {
+//     setError("Something went wrong.")
+//     setVerifying(false)
+//   }
+// }
 
 
 
