@@ -43,8 +43,8 @@ const features = [
     desc: "Send announcements and updates instantly." ,
     icon : MessageSquare
   },
-  { title: "SaaS Multi-Tenant", 
-  desc: "One platform for multiple institutions.",
+  { title: "Finantial Management", 
+  desc: "One platform for better Finantial Management .",
   icon : Users
 },
 { 
