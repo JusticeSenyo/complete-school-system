@@ -44,7 +44,7 @@ const features = [
     icon : MessageSquare
   },
   { title: "Finantial Management", 
-  desc: "One platform for better Finantial Management .",
+  desc: "One platform for better Financial Management .",
   icon : Users
 },
 { 
