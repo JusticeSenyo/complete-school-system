@@ -20,7 +20,14 @@ interface AuthContextType {
   user: User | null
   login: (email: string, password: string) => Promise<boolean>
   logout: () => void
-  signup: (userData: any) => Promise<boolean>
+  signup: (
+    email: string,
+    fullName: string,
+    phone: string,
+    schoolName: string,
+    role: string
+  ) => Promise<boolean>
+  verifyCode: (email: string, code: string) => Promise<{ success: boolean; error?: string }>
   loading: boolean
   isAuthenticated: boolean
 }
@@ -51,7 +58,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      // Mock API call - replace with actual Oracle APEX REST API
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -93,17 +99,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const signup = async (userData: any): Promise<boolean> => {
+  /**
+   * Step 1: Signup → request a verification code
+   */
+  const signup = async (
+    email: string,
+    fullName: string,
+    phone: string,
+    schoolName: string,
+    role: string
+  ): Promise<boolean> => {
     try {
-      const response = await fetch("/api/auth/signup", {
+      const response = await fetch("/api/send-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({ email, fullName, phone, schoolName, role }),
       })
-      return response.ok
+
+      const data = await response.json()
+      return data.success
     } catch (error) {
       console.error("Signup error:", error)
       return false
+    }
+  }
+
+  /**
+   * Step 2: Verify the code
+   */
+  const verifyCode = async (
+    email: string,
+    code: string
+  ): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const response = await fetch("/api/verify-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code }),
+      })
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      console.error("Verify code error:", error)
+      return { success: false, error: "Server error" }
     }
   }
 
@@ -121,6 +160,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         login,
         logout,
         signup,
+        verifyCode,
         loading,
         isAuthenticated: !!user,
       }}

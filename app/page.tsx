@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { GraduationCap, User } from "lucide-react"
 import { motion , AnimatePresence } from "framer-motion"
-import { tierPrices } from "@/utils/currency";
+import { currencySymbols, tierPrices } from "@/utils/currency";
+// import { tiers } from "@/utils/tiers"r
 import { 
   Menu,
    X ,  
@@ -18,7 +19,6 @@ import {
   ChevronDown, ChevronUp, Check, Star, Sparkles 
 } from "lucide-react";
 import { useState, useEffect } from "react"
-import { currencySymbols, conversionRates } from "@/utils/currency";
 
 // import ThemeSwitcher from "@/components/ThemeSwitcher";
 
@@ -256,9 +256,10 @@ const toggleTierExpansion = (tierName) => {
     fetch("https://ipapi.co/json/")
       .then((res) => res.json())
       .then((data) => {
-        if (data.currency && conversionRates[data.currency]) {
-          setCurrency(data.currency);
-        }
+       if (data.currency && tierPrices[data.currency]) {
+  setCurrency(data.currency);
+}
+
       })
       .catch(() => {
         setCurrency("GHS"); // fallback to Ghana Cedi
@@ -474,9 +475,17 @@ const toggleTierExpansion = (tierName) => {
     {/* Pricing Tiers */}
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
       {tiers.map((tier, i) => {
-        const priceData = tierPrices[currency][tier.name];
-        const price = isYearly ? priceData.yearly : priceData.monthly;
-        const isExpanded = expandedTiers[tier.name];
+  const activeCurrency = tierPrices[currency] ? currency : "GHS";
+  const tierKey = tier.name.toLowerCase(); // ✅ normalize key
+  const priceData = tierPrices[activeCurrency][tierKey];
+
+    if (!priceData) {
+    console.warn("Missing price data for:", tierKey, "in", activeCurrency);
+    return null; // skip rendering if something is wrong
+  }
+
+  const price = isYearly ? priceData.yearly : priceData.monthly;
+  const isExpanded = expandedTiers[tier.name];
         
         return (
           <motion.div
